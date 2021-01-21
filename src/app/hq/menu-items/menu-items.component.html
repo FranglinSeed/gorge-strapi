@@ -1,0 +1,196 @@
+<h1>MENU ITEMS</h1>
+<p>This is the Gorge Menu!</p>
+
+<!-- CREATE FORM -->
+<mat-card id="form-container">
+
+  <div *ngIf="isAdd">
+    <h2>Create Item</h2>
+  </div>
+
+  <div *ngIf="isEdit">
+    <h2>Edit An Existing Item</h2>
+  </div>
+
+  <div *ngIf="isDelete">
+    <h2>Delete An Existing Item</h2>
+  </div>
+
+  <form [formGroup]="MenuItemFG" (ngSubmit)="onSubmit()" id="ItemForm">
+
+    <mat-form-field [color]="name.valid && 'accent'">
+      <input
+        matInput
+        formControlName="name"
+        placeholder="Item Name"
+        autocomplete="off"
+      />
+
+      <mat-error *ngIf="name.invalid && name.dirty">
+        You must enter a valid name for the Menu Item.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field [color]="short_description.valid && 'accent'">
+      <input
+        matInput
+        formControlName="short_description"
+        placeholder="Short Description"
+        autocomplete="off"
+      />
+
+      <mat-error *ngIf="short_description.invalid && short_description.dirty">
+        You must enter a valid short description for the Menu Item.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field [color]="long_description.valid && 'accent'">
+      <input
+        matInput
+        formControlName="long_description"
+        placeholder="Long Description"
+        autocomplete="off"
+      />
+
+      <mat-error *ngIf="long_description.invalid && long_description.dirty">
+        You must enter a valid long description for the Menu Item.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field [color]="price.valid && 'accent'">
+      <input
+        matInput
+        formControlName="price"
+        placeholder="Price"
+        autocomplete="off"
+      />
+
+      <mat-error *ngIf="price.invalid && price.dirty">
+        You must enter a valid price for the Menu Item.
+      </mat-error>
+    </mat-form-field>
+
+    <!-- SECTION -->
+    <mat-form-field appearance="fill" [color]="section.valid && 'accent'">
+      <mat-label>Menu Section</mat-label>
+      <mat-select [formControl]="section">
+        <mat-option *ngFor="let sec of MenuSectionsData | async" [value]="sec.id">{{sec.Name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- ALLERGENS -->
+    <mat-form-field appearance="fill" [color]="section.valid && 'accent'">
+      <mat-label>Allergens</mat-label>
+      <mat-select [formControl]="allergens" multiple>
+        <mat-option *ngFor="let alg of AllergenData | async" [value]="alg.id">{{alg.Name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- ACTIVE -->
+    <!-- <mat-form-field> -->
+    <mat-slide-toggle formControlName="active"></mat-slide-toggle>
+    <mat-label>Active</mat-label>
+    <!-- </mat-form-field> -->
+
+    <mat-error class="server-error"><span>{{ serverMessage }}</span></mat-error>
+
+    <button mat-raised-button color="accent" type="submit" [disabled]="MenuItemFG.invalid">
+      Submit
+    </button>
+  </form>
+
+  <hr>
+
+</mat-card>
+
+<hr>
+
+<!-- LIST ITEMS -->
+<mat-card>
+  <h2>CURRENT MENU ITEMS:</h2>
+  <mat-list cdkDropList cdkDropListOrientation="vertical" class="items" (cdkDropListDropped)="drop($event)">
+
+    <h2>EVERYDAY</h2>
+    <ng-container *ngFor="let Item of CrudData">
+      <mat-list-item *ngIf="Item.Section.Name=='Everyday'" cdkDrag>
+
+        <mat-icon cdkDragHandle class="handle">drag_indicator</mat-icon>
+        <div><span>{{ Item.Name }}</span></div>
+
+        <div class="actionButtons">
+          <button mat-stroked-button (click)="editItem( Item.id )" class="edit">
+            E
+          </button>
+          <button mat-stroked-button (click)="destroyItem( Item.id )" class="destroy">
+            D
+          </button>
+        </div>
+
+      </mat-list-item>
+
+    </ng-container>
+
+    <h2>TAKEOUT DELI</h2>
+    <ng-container *ngFor="let Item of CrudData">
+      <mat-list-item *ngIf="Item.Section.Name=='Takeout Deli'" cdkDrag>
+
+        <mat-icon cdkDragHandle class="handle">drag_indicator</mat-icon>
+        <div><span>{{ Item.Name }}</span></div>
+
+        <div class="actionButtons">
+          <button mat-stroked-button (click)="editItem( Item.id )" class="edit">
+            E
+          </button>
+          <button mat-stroked-button (click)="destroyItem( Item.id )" class="destroy">
+            D
+          </button>
+        </div>
+
+      </mat-list-item>
+
+    </ng-container>
+
+    <h2>SPECIALS</h2>
+    <ng-container *ngFor="let Item of CrudData">
+      <mat-list-item *ngIf="Item.Section.Name=='Specials'" cdkDrag>
+
+        <mat-icon cdkDragHandle class="handle">drag_indicator</mat-icon>
+        <div><span>{{ Item.Name }}</span></div>
+
+        <div class="actionButtons">
+          <button mat-stroked-button (click)="editItem( Item.id )" class="edit">
+            E
+          </button>
+          <button mat-stroked-button (click)="destroyItem( Item.id )" class="destroy">
+            D
+          </button>
+        </div>
+
+      </mat-list-item>
+
+    </ng-container>
+
+    <h2>ADDONS</h2>
+    <ng-container *ngFor="let Item of CrudData">
+      <mat-list-item *ngIf="Item.Section.Name=='Addons'" cdkDrag>
+
+        <mat-icon cdkDragHandle class="handle">drag_indicator</mat-icon>
+        <div><span>{{ Item.Name }}</span></div>
+
+        <div class="actionButtons">
+          <button mat-stroked-button (click)="editItem(Item.id)" class="edit">
+            <!-- <button mat-stroked-button (click)="editItem( Item.id )" class="edit"> -->
+            E
+          </button>
+          <button mat-stroked-button (click)="destroyItem( Item.id )" class="destroy">
+            <!-- <button mat-stroked-button (click)="destroyItem( Item.id )" class="destroy"> -->
+            D
+          </button>
+        </div>
+
+      </mat-list-item>
+
+    </ng-container>
+
+  </mat-list>
+</mat-card>

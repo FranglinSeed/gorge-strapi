@@ -1,0 +1,12 @@
+overwrite: true
+watch: true
+schema: "https://adrp.gorge.nz/graphql"
+documents: 
+  - "src/**/*.graphql"
+generates:
+  src/generated/graphql.ts:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-apollo-angular"
+      - "typescript-graphql-files-modules"

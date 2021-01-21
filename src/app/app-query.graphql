@@ -1,0 +1,22 @@
+query getMenuItems {
+  menuItems {
+    Name, 
+    ShortDescription,
+    LongDescription,
+    Price,
+    Priority, 
+    Section {
+      Name,
+    }, 
+    Allergens {
+      Name
+    }
+  }
+}
+
+query getAllergens {
+  allergens {
+    Name,
+    Examples,
+  }
+}
